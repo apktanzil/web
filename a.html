@@ -1,0 +1,40 @@
+<h2>🛡 اختبار حماية الجهاز</h2>
+<p>يتم الآن تنفيذ اختبارات أمنية عبر JavaScript</p>
+<div id="result"></div>
+
+<script>
+  const resultDiv = document.getElementById('result');
+  let passed = [];
+
+  try {
+    localStorage.setItem('test', 'ok');
+    passed.push('✅ localStorage accessible');
+  } catch (e) {
+    passed.push('❌ localStorage Blocked');
+  }
+
+  try {
+    navigator.geolocation.getCurrentPosition(
+      () => passed.push('✅ Geolocation allowed'),
+      () => passed.push('❌ Geolocation blocked')
+    );
+  } catch (e) {
+    passed.push('❌ Geolocation error');
+  }
+
+  try {
+    const popup = window.open('', '_blank');
+    if (popup) {
+      popup.document.write('<p>✅ Popup opened</p>');
+      passed.push('✅ Popup allowed');
+    } else {
+      passed.push('❌ Popup blocked');
+    }
+  } catch (e) {
+    passed.push('❌ Popup failed');
+  }
+
+  setTimeout(() => {
+    resultDiv.innerHTML = passed.join('<br>');
+  }, 1000);
+</script>
